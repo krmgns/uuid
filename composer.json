@@ -1,0 +1,18 @@
+{
+    "name": "okerem/uuid",
+    "homepage": "https://github.com/okerem/uuid",
+    "description": "Sortable UUIDs with date/time prefixes.",
+    "keywords": ["uuid"],
+    "license": "Apache-2.0",
+    "authors": [{"name": "Kerem Güneş"}],
+    "require": {
+        "php": ">=8.2",
+        "ext-ctype": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=9.0"
+    },
+    "autoload": {
+        "classmap": ["src/"]
+    }
+}
