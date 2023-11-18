@@ -123,7 +123,7 @@ assert($uuid2->value === Uuid::NULL_HASH);
 $uuid = Uuid::generate(); // Eg: fec3cfe2-d378-4181-8ba1-99c54bcfa63e
 
 // Validating.
-$valid = Uuid::validate($uuid);
+$valid = Uuid::validate($uuid->value);
 assert($valid === true);
 
 assert(Uuid::validate('invalid') === false);
