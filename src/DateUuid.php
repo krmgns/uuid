@@ -20,13 +20,13 @@ class DateUuid extends Uuid
     /**
      * Constructor.
      *
-     * @param  Uuid\Uuid|null $value
-     * @param  bool           $strict
-     * @param  string|null    $threshold
-     * @throws Uuid\UuidError If strict & an invalid date value given.
+     * @param  Uuid\DateUuid|null $value
+     * @param  bool               $strict
+     * @param  string|null        $threshold
+     * @throws Uuid\UuidError     If strict & an invalid date value given.
      * @override
      */
-    public function __construct(string|Uuid $value = null, bool $strict = true, int|string $threshold = null)
+    public function __construct(string|DateUuid $value = null, bool $strict = true, int|string $threshold = null)
     {
         // Check if value given & strict.
         if (func_num_args() && $strict && !self::validate((string) $value, $strict, $threshold)) {
