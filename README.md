@@ -24,6 +24,7 @@ public function cropAction(string $image) {
         // Since we've created an image file with DateUuid,
         // we're expecting the incoming $image to be valid.
         $uuid = new DateUuid($base);
+
         // Eg: 2023/11/12
         $path = $uuid->getDate('/');
     } catch (UuidError) {
@@ -34,10 +35,12 @@ public function cropAction(string $image) {
 
     // Eg: /images/2023/11/12/0134b3ce-ce20-4917-a020-f0514e110834.jpg
     $image = sprintf('/images/%s/%s.%s', $path, $base, $ext);
+
+    // So such file.
     if (!is_file($image)) {
         throw new NotFoundError();
     }
 
-    // Crop image & serve cropped image here...
+    // Else crop image & serve cropped image here...
 }
 ```
