@@ -55,6 +55,8 @@ public function cropAction(string $image) {
 composer require okerem/uuid
 ```
 
-Note: Besides all classes can take `$value` argument (#1) as type of `string`, `Uuid\Uuid` class can take type of `Uuid\Uuid`, `Uuid\DateUuid` class can take type of `Uuid\DateUuid`, `Uuid\DateTimeUuid` class can take type of `Uuid\DateTimeUuid`, but it also can be skipped for auto-generation at the same time.
+### Notes & Reminding
 
-Note: Besides `Uuid\Uuid` is implementing `Stringable` interface, `Uuid\DateUuid` and `Uuid\DateTimeUuid` are subclasses of `Uuid\Uuid` class. So, while inheriting some useful methods (`toString()`, `toPlainString()`, etc.), they also overrides some methods (`isValid()`, `generate()`, `validate()` etc.) alongside `__constructor()` methods.
+· Besides all classes can take `$value` argument (#1) as type of `string`, `Uuid\Uuid` class can take type of `Uuid\Uuid`, `Uuid\DateUuid` class can take type of `Uuid\DateUuid`, `Uuid\DateTimeUuid` class can take type of `Uuid\DateTimeUuid`, but it also can be skipped for auto-generation at the same time.
+
+· Besides `Uuid\Uuid` is implementing `Stringable` interface, `Uuid\DateUuid` and `Uuid\DateTimeUuid` are subclasses of `Uuid\Uuid` class. So, while inheriting some useful methods (`toString()`, `toPlainString()`, etc.), they also overrides some methods (`isValid()`, `generate()`, `validate()` etc.) alongside `__constructor()` methods.
