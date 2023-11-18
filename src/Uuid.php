@@ -65,7 +65,7 @@ class Uuid implements \Stringable
      *
      * @return string
      */
-    public function toPlainString(): string
+    public function toHashString(): string
     {
         return str_replace('-', '', $this->value);
     }

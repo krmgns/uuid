@@ -34,7 +34,7 @@ class UuidTest extends PHPUnit\Framework\TestCase
         $uuid = new Uuid();
 
         self::assertSame($uuid->value, $uuid->toString());
-        self::assertSame(str_replace('-', '', $uuid->value), $uuid->toPlainString());
+        self::assertSame(str_replace('-', '', $uuid->value), $uuid->toHashString());
     }
 
     function testIsNullCheckers() {
