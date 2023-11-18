@@ -63,7 +63,7 @@ composer require okerem/uuid
 
 ### The `Uuid\Uuid` Class
 
-When no `$value` (UUID value) given, `Uuid\Uuid` class will generate and assign its value by itself. Otherwise, given value will be checked in strict mode (modifier argument is `$strict` as `true`) as default whether it's a valid UUID value or not.
+When no `$value` (UUID value) given, `Uuid\Uuid` class will generate and assign its value by itself. Otherwise, given value will be assigned after it's checked in strict mode (modifier argument is `$strict` as `true`) whether it's a valid UUID value or not.
 
 ```php
 use Uuid\{Uuid, UuidError};
