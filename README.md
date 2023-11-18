@@ -57,6 +57,35 @@ composer require okerem/uuid
 
 ### Notes & Reminding
 
-· Besides all classes can take `$value` argument (#1) as type of `string`, `Uuid\Uuid` class can take type of `Uuid\Uuid`, `Uuid\DateUuid` class can take type of `Uuid\DateUuid`, `Uuid\DateTimeUuid` class can take type of `Uuid\DateTimeUuid`, but it also can be skipped for auto-generation at the same time.
+· Besides all classes can take `$value` argument (#1) as type of `string`, `Uuid\Uuid` class can also take type of `Uuid\Uuid`, `Uuid\DateUuid` class can also take type of `Uuid\DateUuid`, `Uuid\DateTimeUuid` class can also take type of `Uuid\DateTimeUuid`, but it also can be skipped for auto-generation at the same time.
 
 · Besides `Uuid\Uuid` is implementing `Stringable` interface, `Uuid\DateUuid` and `Uuid\DateTimeUuid` are subclasses of `Uuid\Uuid` class. So, while inheriting some useful methods (`toString()`, `toPlainString()`, etc.), they also overrides some methods (`isValid()`, `generate()`, `validate()` etc.) alongside `__constructor()` methods.
+
+### The `Uuid\Uuid` Class
+
+When no `$value` (UUID value) given, `Uuid\Uuid` class will generate and assign its value by itself. Otherwise, given value will be checked in strict mode (modifier argument is `$strict` as `true`) as default whether it's a valid UUID value or not.
+
+```php
+use Uuid\{Uuid, UuidError};
+
+$uuid = new Uuid();
+
+assert($uuid->value === $uuid->toString());
+assert($uuid->value === (string) $uuid);
+assert($uuid->value == $uuid);
+
+$uuid = new Uuid('26708ec6-ad78-4291-a449-9ee08cf50cfc');
+assert($uuid->isValid() === false);
+
+$uuid = new Uuid('invalid', strict: false);
+assert($uuid->isValid() === false);
+
+try { new Uuid(null); } catch (UuidError $e) {
+    assert("Invalid UUID value: null" === $e->getMessage());
+}
+
+try { new Uuid('invalid'); } catch (UuidError $e) {
+    assert("Invalid UUID value: 'invalid'" === $e->getMessage());
+}
+
+```

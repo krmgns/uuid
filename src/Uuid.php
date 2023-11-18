@@ -34,6 +34,7 @@ class Uuid implements \Stringable
         if (func_num_args() && $strict && !self::validate((string) $value, $strict)) {
             throw UuidError::forInvalidValue($value);
         }
+        prd($value);
 
         // Create if none given.
         $value ??= self::generate();
