@@ -73,16 +73,16 @@ $uuid = new Uuid();
 
 assert($uuid->value === $uuid->toString());
 assert($uuid->value === (string) $uuid);
-assert($uuid->value == $uuid);
+assert($uuid->value == $uuid); // Stringable
 
-assert($uuid->isEqual($uuid) === true);
-assert($uuid->isEqual($uuid->value) === true);
+assert(true === $uuid->isEqual($uuid));
+assert(true === $uuid->isEqual($uuid->value));
 
 $uuid = new Uuid('26708ec6-ad78-4291-a449-9ee08cf50cfc');
-assert($uuid->isValid() === true);
+assert(true === $uuid->isValid());
 
 $uuid = new Uuid('invalid', strict: false);
-assert($uuid->isValid() === false);
+assert(false === $uuid->isValid());
 
 try { new Uuid(null); } catch (UuidError $e) {
     assert("Invalid UUID value: null" === $e->getMessage());
@@ -95,9 +95,9 @@ try { new Uuid('invalid'); } catch (UuidError $e) {
 // Given value.
 $uuid = new Uuid($value = '26708ec6-ad78-4291-a449-9ee08cf50cfc');
 
-assert($uuid->isEqual($uuid) === true);
-assert($uuid->isEqual($uuid->value) === true);
-assert($uuid->isEqual($value) === true);
+assert(true === $uuid->isEqual($uuid));
+assert(true === $uuid->isEqual($uuid->value));
+assert(true === $uuid->isEqual($value));
 
 assert('26708ec6-ad78-4291-a449-9ee08cf50cfc' === $uuid->toString());
 assert('26708ec6ad784291a4499ee08cf50cfc' === $uuid->toHashString());
@@ -106,14 +106,14 @@ assert('26708ec6ad784291a4499ee08cf50cfc' === $uuid->toHashString());
 $uuid1 = new Uuid('00000000-0000-0000-0000-000000000000', strict: false);
 $uuid2 = new Uuid('00000000000000000000000000000000', strict: false);
 
-assert($uuid1->isValid() === false);
-assert($uuid2->isValid() === false);
+assert(false === $uuid1->isValid());
+assert(false === $uuid2->isValid());
 
-assert($uuid1->isNull() === true);
-assert($uuid2->isNullHash() === true);
+assert(true === $uuid1->isNull());
+assert(true === $uuid2->isNullHash());
 
-assert($uuid1->value === Uuid::NULL);
-assert($uuid2->value === Uuid::NULL_HASH);
+assert(Uuid::NULL === $uuid1->value);
+assert(Uuid::NULL_HASH === $uuid2->value);
 ```
 
 #### Statics
@@ -124,19 +124,20 @@ $uuid = Uuid::generate(); // Eg: fec3cfe2-d378-4181-8ba1-99c54bcfa63e
 
 // Validating.
 $valid = Uuid::validate($uuid->value);
-assert($valid === true);
+assert(true === $valid);
 
-assert(Uuid::validate('invalid') === false);
-assert(Uuid::validate('invalid', strict: false) === false);
+assert(false === Uuid::validate('invalid'));
+assert(false === Uuid::validate('invalid', strict: false));
 
-assert(Uuid::validate(Uuid::NULL, strict: true) === false);
-assert(Uuid::validate(Uuid::NULL_HASH, strict: true) === false);
-assert(Uuid::validate(Uuid::NULL, strict: false) === true);
-assert(Uuid::validate(Uuid::NULL_HASH, strict: false) === true);
+assert(false === Uuid::validate(Uuid::NULL));
+assert(false === Uuid::validate(Uuid::NULL_HASH));
+
+assert(true === Uuid::validate(Uuid::NULL, strict: false));
+assert(true === Uuid::validate(Uuid::NULL_HASH, strict: false));
 
 // Equal checking.
-assert(Uuid::equals($uuid->value, 'fec3cfe2-d378-4181-8ba1-99c54bcfa63e') === true);
-assert(Uuid::equals($uuid->value, 'invalid-uuid-input-value') === false);
+assert(true === Uuid::equals($uuid->value, 'fec3cfe2-d378-4181-8ba1-99c54bcfa63e'));
+assert(false === Uuid::equals($uuid->value, 'invalid-uuid-input-value'));
 
 // DIY tools.
 $bins = random_bytes(16);
@@ -147,3 +148,54 @@ $bins = Uuid::modify($bins);
 // Format as UUID format.
 $uuid = Uuid::format(bin2hex($bins));
 ```
+
+See [test/unit/UuidTest.php](test/unit/UuidTest) more examples. <br><br>
+
+### The `Uuid\DateUuid` Class
+
+```php
+use Uuid\DateUuid;
+
+$dates = [gmdate('Ymd'), gmdate('Y-m-d')];
+
+// Getting date.
+$uuid = new DateUuid();
+
+assert($dates[0] === $uuid->getDate());
+assert($dates[1] === $uuid->getDate(separator: '-'));
+
+$uuid = new DateUuid(md5(''), strict: false);
+
+assert(null === $uuid->getDate());
+
+// Getting date/time.
+$uuid = new DateUuid();
+
+assert($dates[0] === $uuid->getDateTime()->format('Ymd'));
+assert($dates[1] === $uuid->getDateTime()->format('Y-m-d'));
+
+$uuid = new DateUuid(md5(''), strict: false);
+
+assert(null === $uuid->getDateTime());
+```
+
+#### Statics
+
+```php
+// Generating.
+$uuid = DateUuid::generate(); // Eg: 0134b3ce-25fc-49f8-b9f9-61ed2784c7d1
+
+// Parsing.
+$uuid1 = new DateUuid();
+$uuid2 = new DateUuid(md5(''), strict: false);
+
+assert(null !== DateUuid::parseDate($uuid1->value));
+assert(null === DateUuid::parseDate($uuid2->value));
+
+// Next year for falsity (eg: 20241212).
+$threshold = (gmdate('Y') + $diff) . '1212';
+
+assert(null === DateUuid::parseDate($uuid1->value, threshold: $threshold));
+```
+
+See [test/unit/DateUuidTest.php](test/unit/DateUuidTest) more examples.
