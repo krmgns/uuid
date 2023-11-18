@@ -76,7 +76,7 @@ assert($uuid->value === (string) $uuid);
 assert($uuid->value == $uuid);
 
 $uuid = new Uuid('26708ec6-ad78-4291-a449-9ee08cf50cfc');
-assert($uuid->isValid() === false);
+assert($uuid->isValid() === true);
 
 $uuid = new Uuid('invalid', strict: false);
 assert($uuid->isValid() === false);
@@ -98,6 +98,9 @@ assert('26708ec6ad784291a4499ee08cf50cfc' === $uuid->toHashString());
 // Null values.
 $uuid1 = new Uuid('00000000-0000-0000-0000-000000000000', strict: false);
 $uuid2 = new Uuid('00000000000000000000000000000000', strict: false);
+
+assert($uuid1->isValid() === false);
+assert($uuid2->isValid() === false);
 
 assert($uuid1->isNull() === true);
 assert($uuid2->isNullHash() === true);
