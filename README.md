@@ -149,7 +149,7 @@ $bins = Uuid::modify($bins);
 $uuid = Uuid::format(bin2hex($bins));
 ```
 
-See [test/unit/UuidTest](test/unit/UuidTest.php) for more examples. <br><br>
+See [test/unit/UuidTest.php](test/unit/UuidTest.php) for more examples. <br><br>
 
 ### The `Uuid\DateUuid` Class
 
@@ -200,6 +200,4 @@ $threshold = (gmdate('Y') + $diff) . '1212';
 assert(null === DateUuid::parseDate($uuid1->value, threshold: $threshold));
 ```
 
-See [test/unit/DateUuidTest](test/unit/DateUuidTest.php) for more examples. <br><br>
-
-### The `Uuid\DateTimeUuid` Class
+See [test/unit/DateUuidTest.php](test/unit/DateUuidTest.php) for more examples. <br><br>
