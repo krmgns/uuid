@@ -75,6 +75,9 @@ assert($uuid->value === $uuid->toString());
 assert($uuid->value === (string) $uuid);
 assert($uuid->value == $uuid);
 
+assert($uuid->isEqual($uuid) === true);
+assert($uuid->isEqual($uuid->value) === true);
+
 $uuid = new Uuid('26708ec6-ad78-4291-a449-9ee08cf50cfc');
 assert($uuid->isValid() === true);
 
@@ -90,7 +93,11 @@ try { new Uuid('invalid'); } catch (UuidError $e) {
 }
 
 // Given value.
-$uuid = new Uuid('26708ec6-ad78-4291-a449-9ee08cf50cfc');
+$uuid = new Uuid($value = '26708ec6-ad78-4291-a449-9ee08cf50cfc');
+
+assert($uuid->isEqual($uuid) === true);
+assert($uuid->isEqual($uuid->value) === true);
+assert($uuid->isEqual($value) === true);
 
 assert('26708ec6-ad78-4291-a449-9ee08cf50cfc' === $uuid->toString());
 assert('26708ec6ad784291a4499ee08cf50cfc' === $uuid->toHashString());
