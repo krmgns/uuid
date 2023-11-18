@@ -63,7 +63,7 @@ composer require okerem/uuid
 
 ### The `Uuid\Uuid` Class
 
-When no `$value` (UUID value) given, `Uuid\Uuid` class will generate and assign its value by itself. Otherwise, given value will be assigned after it's checked in strict mode (modifier argument is `$strict` as `true`) whether it's a valid UUID value or not.
+Like the inheriting classes, when no `$value` (UUID value) given, `Uuid\Uuid` class will generate and assign its value by itself. Otherwise, given value will be assigned after it's checked in strict mode (modifier argument is `$strict` as `true`) whether it's a valid UUID value or not.
 
 ```php
 use Uuid\{Uuid, UuidError};
@@ -149,9 +149,11 @@ $bins = Uuid::modify($bins);
 $uuid = Uuid::format(bin2hex($bins));
 ```
 
-See [test/unit/UuidTest](test/unit/UuidTest.php) more examples. <br><br>
+See [test/unit/UuidTest](test/unit/UuidTest.php) for more examples. <br><br>
 
 ### The `Uuid\DateUuid` Class
+
+This class uses 12-length random bytes and 4-length bytes of UTC date as prefix. So, its date can be re-taken (eg: 20231212 or 2023-12-12 with separator) to use for any use case and it's usable for where sortable UUIDs are needed.
 
 ```php
 use Uuid\DateUuid;
@@ -198,4 +200,6 @@ $threshold = (gmdate('Y') + $diff) . '1212';
 assert(null === DateUuid::parseDate($uuid1->value, threshold: $threshold));
 ```
 
-See [test/unit/DateUuidTest](test/unit/DateUuidTest.php) more examples.
+See [test/unit/DateUuidTest](test/unit/DateUuidTest.php) for more examples. <br><br>
+
+### The `Uuid\DateTimeUuid` Class
