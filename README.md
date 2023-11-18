@@ -8,7 +8,7 @@ The `generate()` method of;
 
 Besides these UUIDs are sortable, they can be used for some sort of jobs like folder exploration (say, where we are working with a image cropping service).
 
-So, as a quick example, let's see it in action, yet in case you can more examples in [test/unit](/test/unit) directory;
+So, as a quick example, let's see it in action;
 
 ```php
 // File: ImageController.php
