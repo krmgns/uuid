@@ -28,7 +28,9 @@ public function cropAction(string $image) {
         // Eg: 2023/11/12
         $path = $uuid->getDate('/');
     } catch (UuidError) {
+        // Invalid DateUuid.
         throw new BadRequestError();
+        // Internal error.
     } catch (Throwable) {
         throw new InternalServerError();
     }
