@@ -17,12 +17,14 @@ use Throwable;
 
 /** @route /crop/:image */
 public function cropAction(string $image) {
+    // Eg: 0134b3ce-ce20-4917-a020-f0514e110834.jpg
     [$base, $ext] = explode('.', $image);
 
-    // Since we've created an image file with DateUuid,
-    // we're expecting the incoming $image to be valid.
     try {
+        // Since we've created an image file with DateUuid,
+        // we're expecting the incoming $image to be valid.
         $uuid = new DateUuid($base);
+        // Eg: 2023/11/12
         $path = $uuid->getDate('/');
     } catch (UuidError) {
         throw new BadRequestError();
@@ -30,6 +32,7 @@ public function cropAction(string $image) {
         throw new InternalServerError();
     }
 
+    // Eg: /images/2023/11/12/0134b3ce-ce20-4917-a020-f0514e110834.jpg
     $image = sprintf('/images/%s/%s.%s', $path, $base, $ext);
     if (!is_file($image)) {
         throw new NotFoundError();
