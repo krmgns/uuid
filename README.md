@@ -4,7 +4,7 @@ The `generate()` method of;
 
 - `Uuid\Uuid` class uses 16-length random bytes.
 - `Uuid\DateUuid` class uses 12-length random bytes and 4-length bytes of UTC date as prefix.
-- `Uuid\DateTimeUuid` class uses 10-length random bytes and 6-length bytes of UTC date as prefix.
+- `Uuid\DateTimeUuid` class uses 10-length random bytes and 6-length bytes of UTC date/time as prefix.
 
 Besides these UUIDs are sortable, they can be used for some sort of jobs like folder exploration (say, where we are working with a image cropping service).
 
@@ -201,3 +201,67 @@ assert(null === DateUuid::parseDate($uuid1->value, threshold: $threshold));
 ```
 
 See [test/unit/DateUuidTest.php](test/unit/DateUuidTest.php) for more examples. <br><br>
+
+### The `Uuid\DateTimeUuid` Class
+
+This class uses 10-length random bytes and 6-length bytes of UTC date/time as prefix. So, its date can be re-taken (eg: 20231212, 101122 or 2023-12-12, 10-11-22 with separator) to use for any use case and it's usable for where sortable UUIDs are needed.
+
+```php
+use Uuid\DateTimeUuid;
+
+$dates = [gmdate('Ymd'), gmdate('Y-m-d')];
+$times = [gmdate('His'), gmdate('H-i-s')];
+
+// Getting date.
+$uuid = new DateTimeUuid();
+
+assert($dates[0] === $uuid->getDate());
+assert($dates[1] === $uuid->getDate(separator: '-'));
+
+$uuid = new DateTimeUuid(md5(''), strict: false);
+
+assert(null === $uuid->getDate());
+
+// Getting time.
+$uuid = new DateTimeUuid();
+
+assert($times[0] === $uuid->getTime());
+assert($times[1] === $uuid->getTime(separator: '-'));
+
+$uuid = new DateTimeUuid(md5(''), strict: false);
+
+assert(null === $uuid->getTime());
+
+// Getting date/time.
+$uuid = new DateTimeUuid();
+
+assert($dates[0] === $uuid->getDateTime()->format('Ymd'));
+assert($dates[1] === $uuid->getDateTime()->format('Y-m-d'));
+assert($times[0] === $uuid->getDateTime()->format('His'));
+assert($times[1] === $uuid->getDateTime()->format('H-i-s'));
+
+$uuid = new DateTimeUuid(md5(''), strict: false);
+
+assert(null === $uuid->getDateTime());
+```
+
+#### Statics
+
+```php
+// Generating.
+$uuid = DateTimeUuid::generate(); // Eg: 12666c9c-b0c6-4532-b8da-dbc660ff4170
+
+// Parsing.
+$uuid1 = new DateTimeUuid();
+$uuid2 = new DateTimeUuid(md5(''), strict: false);
+
+assert(null !== DateTimeUuid::parseDateTime($uuid1->value));
+assert(null === DateTimeUuid::parseDateTime($uuid2->value));
+
+// Next year for falsity (eg: 20241212191919).
+$threshold = (gmdate('Y') + $diff) . '1212191919';
+
+assert(null === DateTimeUuid::parseDateTime($uuid1->value, threshold: $threshold));
+```
+
+See [test/unit/DateTimeUuidTest.php](test/unit/DateTimeUuidTest.php) for more examples. <br><br>
