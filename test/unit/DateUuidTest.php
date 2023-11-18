@@ -99,7 +99,7 @@ class DateUuidTest extends PHPUnit\Framework\TestCase
     }
 
     private function threshold($diff = 1) {
-        // Next year for falsity (eg: 20241212).
+        // Next year to falsify (eg: 20241212).
         return (gmdate('Y') + $diff) . '1212';
     }
 }

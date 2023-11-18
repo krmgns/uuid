@@ -6,7 +6,7 @@
 namespace Uuid;
 
 /**
- * Helper class (not in-use).
+ * Helper class (not in use).
  *
  * @package Uuid
  * @class   Uuid\UuidHelper
