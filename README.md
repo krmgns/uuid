@@ -115,3 +115,35 @@ assert($uuid2->isNullHash() === true);
 assert($uuid1->value === Uuid::NULL);
 assert($uuid2->value === Uuid::NULL_HASH);
 ```
+
+#### Statics
+
+```php
+// Generating.
+$uuid = Uuid::generate(); // Eg: fec3cfe2-d378-4181-8ba1-99c54bcfa63e
+
+// Validating.
+$valid = Uuid::validate($uuid);
+assert($valid === true);
+
+assert(Uuid::validate('invalid') === false);
+assert(Uuid::validate('invalid', strict: false) === false);
+
+assert(Uuid::validate(Uuid::NULL, strict: true) === false);
+assert(Uuid::validate(Uuid::NULL_HASH, strict: true) === false);
+assert(Uuid::validate(Uuid::NULL, strict: false) === true);
+assert(Uuid::validate(Uuid::NULL_HASH, strict: false) === true);
+
+// Equal checking.
+assert(Uuid::equals($uuid->value, 'fec3cfe2-d378-4181-8ba1-99c54bcfa63e') === true);
+assert(Uuid::equals($uuid->value, 'invalid-uuid-value') === false);
+
+// DIY tools.
+$bins = random_bytes(16);
+
+// Add version/variant.
+$bins = Uuid::modify($bins);
+
+// Format as UUID format.
+$uuid = Uuid::format(bin2hex($bins));
+```
