@@ -136,7 +136,7 @@ assert(Uuid::validate(Uuid::NULL_HASH, strict: false) === true);
 
 // Equal checking.
 assert(Uuid::equals($uuid->value, 'fec3cfe2-d378-4181-8ba1-99c54bcfa63e') === true);
-assert(Uuid::equals($uuid->value, 'invalid-uuid-value') === false);
+assert(Uuid::equals($uuid->value, 'invalid-uuid-input-value') === false);
 
 // DIY tools.
 $bins = random_bytes(16);
