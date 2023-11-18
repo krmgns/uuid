@@ -15,7 +15,10 @@ So, as a quick example, let's see it in action, yet in case you can more example
 use Uuid\{DateUuid, UuidError};
 use Throwable;
 
-/** @route /crop/:image */
+/**
+ * Eg: api.foo.com/image/crop/0134b3ce-ce20-4917-a020-f0514e110834.jpg
+ * @route /image/crop/:image
+ */
 public function cropAction(string $image) {
     // Eg: 0134b3ce-ce20-4917-a020-f0514e110834.jpg
     [$base, $ext] = explode('.', $image);
@@ -26,7 +29,7 @@ public function cropAction(string $image) {
         $uuid = new DateUuid($base);
 
         // Eg: 2023/11/12
-        $path = $uuid->getDate('/');
+        $path = $uuid->getDate(separator: '/');
     } catch (UuidError) {
         // Invalid DateUuid.
         throw new BadRequestError();
