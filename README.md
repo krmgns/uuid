@@ -55,11 +55,13 @@ public function cropAction(string $image) {
 composer require okerem/uuid
 ```
 
-### Notes & Reminding
+### Notes / Reminding
 
 · Besides all classes can take `$value` argument (#1) as type of `string`, `Uuid\Uuid` class can also take type of `Uuid\Uuid`, `Uuid\DateUuid` class can also take type of `Uuid\DateUuid`, `Uuid\DateTimeUuid` class can also take type of `Uuid\DateTimeUuid`, but it also can be skipped for auto-generation at the same time.
 
 · Besides `Uuid\Uuid` is implementing `Stringable` interface, `Uuid\DateUuid` and `Uuid\DateTimeUuid` are subclasses of `Uuid\Uuid` class. So, while inheriting some useful methods (`toString()`, `toHashString()`, etc.), they also overrides some methods (`isValid()`, `generate()`, `validate()` etc.) alongside `__constructor()` methods.
+
+· Since `Uuid\DateTimeUuid` uses an instant date/time stamp up to seconds (format: `YmdHis`), the best sortable UUIDs can only be generated with this class.
 
 ### The `Uuid\Uuid` Class
 
