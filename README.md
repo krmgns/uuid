@@ -6,7 +6,7 @@ The `generate()` method of;
 - `Uuid\DateUuid` class uses 12-length random bytes and 4-length bytes of UTC date as prefix, and generated values are sortable up to 8th hex character.
 - `Uuid\DateTimeUuid` class uses 10-length random bytes and 6-length bytes of UTC date/time as prefix, and generated values are sortable up to 12th hex character.
 
-Besides these UUIDs are sortable, they can be used for some sort of jobs like folder exploration (say, where we are working with a image cropping service).
+Besides these UUIDs are sortable, they can be used for some sort of jobs like folder exploration (say, where we are working with an image cropping service).
 
 So, as a quick example, let's see it in action;
 
@@ -24,8 +24,8 @@ public function cropAction(string $image) {
     [$base, $ext] = explode('.', $image);
 
     try {
-        // Since we've created an image file with DateUuid,
-        // we're expecting the incoming $image to be valid.
+        // Since we've created an image file name with DateUuid,
+        // here we're expecting the incoming $image to be valid.
         $uuid = new DateUuid($base);
 
         // Eg: 2023/11/12
@@ -153,7 +153,7 @@ See [test/unit/UuidTest.php](test/unit/UuidTest.php) for more examples. <br><br>
 
 ### The `Uuid\DateUuid` Class
 
-This class uses 12-length random bytes and 4-length bytes of UTC date as prefix. So, its date can be re-taken (eg: 20231212 or 2023-12-12 with separator) to use for any use case and it's usable for where sortable UUIDs are needed.
+This class uses 12-length random bytes and 4-length bytes of UTC date as prefix. So, its date can be re-taken (eg: 20231212 or 2023-12-12 with `$separator` option) to use for any use case and it's usable for where sortable UUIDs are needed.
 
 ```php
 use Uuid\DateUuid;
@@ -195,16 +195,16 @@ assert(null !== DateUuid::parseDate($uuid1->value));
 assert(null === DateUuid::parseDate($uuid2->value));
 
 // Next year for falsity (eg: 20241212).
-$threshold = (gmdate('Y') + $diff) . '1212';
+$threshold = (gmdate('Y') + 1) . '1212';
 
-assert(null === DateUuid::parseDate($uuid1->value, threshold: $threshold));
+assert(null === DateUuid::parseDate($uuid1->value, $threshold));
 ```
 
 See [test/unit/DateUuidTest.php](test/unit/DateUuidTest.php) for more examples. <br><br>
 
 ### The `Uuid\DateTimeUuid` Class
 
-This class uses 10-length random bytes and 6-length bytes of UTC date/time as prefix. So, its date can be re-taken (eg: 20231212, 101122 or 2023-12-12, 10-11-22 with separator) to use for any use case and it's usable for where sortable UUIDs are needed.
+This class uses 10-length random bytes and 6-length bytes of UTC date/time as prefix. So, its date can be re-taken (eg: 20231212, 101122 or 2023-12-12, 10-11-22 with `$separator` option) to use for any use case and it's usable for where sortable UUIDs are needed.
 
 ```php
 use Uuid\DateTimeUuid;
@@ -259,9 +259,9 @@ assert(null !== DateTimeUuid::parseDateTime($uuid1->value));
 assert(null === DateTimeUuid::parseDateTime($uuid2->value));
 
 // Next year for falsity (eg: 20241212191919).
-$threshold = (gmdate('Y') + $diff) . '1212191919';
+$threshold = (gmdate('Y') + 1) . '1212191919';
 
-assert(null === DateTimeUuid::parseDateTime($uuid1->value, threshold: $threshold));
+assert(null === DateTimeUuid::parseDateTime($uuid1->value, $threshold));
 ```
 
 See [test/unit/DateTimeUuidTest.php](test/unit/DateTimeUuidTest.php) for more examples. <br><br>
