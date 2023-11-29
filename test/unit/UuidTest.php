@@ -28,6 +28,7 @@ class UuidTest extends PHPUnit\Framework\TestCase
         $uuid = new Uuid();
 
         self::assertIsString((string) $uuid);
+        self::assertSame((string) $uuid, $uuid->value);
     }
 
     function testStringGetters() {
