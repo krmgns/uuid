@@ -16,33 +16,33 @@ use Uuid\{DateUuid, UuidError};
 use Throwable;
 
 /**
- * Eg: api.foo.com/image/crop/0134b3ce-ce20-4917-a020-f0514e110834.jpg
+ * Eg: cdn.foo.com/image/crop/0134b3ce-ce20-4917-a020-f0514e110834.jpg
  * @route /image/crop/:image
  */
 public function cropAction(string $image) {
     // Eg: 0134b3ce-ce20-4917-a020-f0514e110834.jpg
-    [$base, $ext] = explode('.', $image);
+    [$name, $extension] = explode('.', $image);
 
     try {
         // Since we've created an image file name with DateUuid,
         // here we're expecting the incoming $image to be valid.
-        $uuid = new DateUuid($base);
+        $uuid = new DateUuid($name);
 
         // Eg: 2023/11/12
-        $path = $uuid->getDate(separator: '/');
+        $path = $uuid->getDate('/');
     } catch (UuidError) {
         // Invalid DateUuid.
         throw new BadRequestError();
-        // Internal error.
     } catch (Throwable) {
+        // Internal error.
         throw new InternalServerError();
     }
 
     // Eg: /images/2023/11/12/0134b3ce-ce20-4917-a020-f0514e110834.jpg
-    $image = sprintf('/images/%s/%s.%s', $path, $base, $ext);
+    $image = sprintf('/images/%s/%s.%s', $path, $name, $extension);
 
-    // So such file.
-    if (!is_file($image)) {
+    // No such file.
+    if (!file_exists($image)) {
         throw new NotFoundError();
     }
 
