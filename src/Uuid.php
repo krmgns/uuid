@@ -24,9 +24,9 @@ class Uuid implements \Stringable
     /**
      * Constructor.
      *
-     * @param  Uuid\Uuid|null $value
-     * @param  bool           $strict
-     * @throws Uuid\UuidError If strict & an invalid value given.
+     * @param  string|Uuid\Uuid|null $value
+     * @param  bool                  $strict
+     * @throws Uuid\UuidError If strict & invalid value given.
      */
     public function __construct(string|Uuid $value = null, bool $strict = true)
     {

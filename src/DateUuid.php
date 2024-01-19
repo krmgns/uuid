@@ -15,18 +15,18 @@ namespace Uuid;
 class DateUuid extends Uuid
 {
     /** For a valid parsing process. */
-    public readonly int|string|null $threshold;
+    public readonly string|int|null $threshold;
 
     /**
      * Constructor.
      *
-     * @param  Uuid\DateUuid|null $value
-     * @param  bool               $strict
-     * @param  string|null        $threshold
-     * @throws Uuid\UuidError     If strict & an invalid date value given.
+     * @param  string|Uuid\DateUuid|null $value
+     * @param  bool                      $strict
+     * @param  string|int|null           $threshold
+     * @throws Uuid\UuidError If strict & invalid date value given.
      * @override
      */
-    public function __construct(string|DateUuid $value = null, bool $strict = true, int|string $threshold = null)
+    public function __construct(string|DateUuid $value = null, bool $strict = true, string|int $threshold = null)
     {
         // Check if value given & strict.
         if (func_num_args() && $strict && !self::validate((string) $value, $strict, $threshold)) {
@@ -88,11 +88,11 @@ class DateUuid extends Uuid
      * Check this Uuid value if valid.
      *
      * @param  bool            $strict
-     * @param  int|string|null $threshold
+     * @param  string|int|null $threshold
      * @return bool
      * @override
      */
-    public function isValid(bool $strict = true, int|string $threshold = null): bool
+    public function isValid(bool $strict = true, string|int $threshold = null): bool
     {
         return self::validate(
             $this->value, $strict,
@@ -127,11 +127,11 @@ class DateUuid extends Uuid
      *
      * @param  string          $uuid
      * @param  bool            $strict
-     * @param  int|string|null $threshold
+     * @param  string|int|null $threshold
      * @return bool
      * @override
      */
-    public static function validate(string $uuid, bool $strict = true, int|string $threshold = null): bool
+    public static function validate(string $uuid, bool $strict = true, string|int $threshold = null): bool
     {
         if (!parent::validate($uuid, $strict)) {
             return false;
@@ -147,10 +147,10 @@ class DateUuid extends Uuid
      * Parse date from given UUID value.
      *
      * @param  string          $uuid
-     * @param  int|string|null $threshold
+     * @param  string|int|null $threshold
      * @return string|null
      */
-    public static function parseDate(string $uuid, int|string $threshold = null): string|null
+    public static function parseDate(string $uuid, string|int $threshold = null): string|null
     {
         $ret = null;
 
