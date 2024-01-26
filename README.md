@@ -52,7 +52,7 @@ public function cropAction(string $image) {
 
 ### Installing
 ```
-composer require okerem/uuid
+composer require krmgns/uuid
 ```
 
 ### Notes / Reminding

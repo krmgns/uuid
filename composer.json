@@ -1,6 +1,6 @@
 {
-    "name": "okerem/uuid",
-    "homepage": "https://github.com/okerem/uuid",
+    "name": "krmgns/uuid",
+    "homepage": "https://github.com/krmgns/uuid",
     "description": "Random or sortable UUIDs with date/time prefixes.",
     "keywords": ["uuid"],
     "license": "Apache-2.0",

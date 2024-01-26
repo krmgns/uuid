@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 /**
  * Copyright (c) 2023 · Kerem Güneş
- * Apache License 2.0 · https://github.com/okerem/uuid
+ * Apache License 2.0 · https://github.com/krmgns/uuid
  */
 namespace Uuid;
 
