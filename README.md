@@ -2,7 +2,7 @@ While preserving version & variant fields of generated values, Uuid library prov
 
 The `generate()` method of;
 
-- `Uuid\Uuid` class uses 16-length random bytes.
+- `Uuid\Uuid` class uses 16-length random bytes (UUID/v4).
 - `Uuid\DateUuid` class uses 12-length random bytes and 4-length bytes of UTC date as prefix, and generated values are sortable up to 8th hex character.
 - `Uuid\DateTimeUuid` class uses 10-length random bytes and 6-length bytes of UTC date/time as prefix, and generated values are sortable up to 12th hex character.
 
