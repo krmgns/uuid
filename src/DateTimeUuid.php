@@ -49,7 +49,7 @@ class DateTimeUuid extends Uuid
      */
     public function getDate(string $separator = null): string|null
     {
-        @[$date, ] = self::parseDateTime($this->value, $this->threshold);
+        [$date, ] = self::parseDateTime($this->value, $this->threshold) ?: [null, null];
 
         // Period separator.
         if ($date !== null && $separator) {
@@ -70,7 +70,7 @@ class DateTimeUuid extends Uuid
      */
     public function getTime(string $separator = null): string|null
     {
-        @[, $time] = self::parseDateTime($this->value, $this->threshold);
+        [, $time] = self::parseDateTime($this->value, $this->threshold) ?: [null, null];
 
         // Period separator.
         if ($time !== null && $separator) {
@@ -86,17 +86,24 @@ class DateTimeUuid extends Uuid
     /**
      * Get date/time.
      *
-     * @param  string $zone
+     * @param  string|null $zone
      * @return DateTime|null
      * @throws Uuid\UuidError
      */
-    public function getDateTime(string $zone = 'UTC'): \DateTime|null
+    public function getDateTime(string $zone = null): \DateTime|null
     {
-        @[$date, $time] = self::parseDateTime($this->value, $this->threshold);
+        [$date, $time] = self::parseDateTime($this->value, $this->threshold) ?: [null, null];
 
         if ($date !== null && $time !== null) {
             try {
-                return new \DateTime($date . $time, new \DateTimeZone($zone));
+                $ret = new \DateTime($date . $time, new \DateTimeZone('UTC'));
+
+                // Convert to zone.
+                if ($zone !== null) {
+                    $ret->setTimezone(new \DateTimeZone($zone));
+                }
+
+                return $ret;
             } catch (\Throwable $e) {
                 throw new UuidError($e->getMessage(), $e->getCode(), $e);
             }

@@ -65,17 +65,24 @@ class DateUuid extends Uuid
     /**
      * Get date/time.
      *
-     * @param  string $zone
+     * @param  string|null $zone
      * @return DateTime|null
      * @throws Uuid\UuidError
      */
-    public function getDateTime(string $zone = 'UTC'): \DateTime|null
+    public function getDateTime(string $zone = null): \DateTime|null
     {
         $date = self::parseDate($this->value, $this->threshold);
 
         if ($date !== null) {
             try {
-                return new \DateTime($date, new \DateTimeZone($zone));
+                $ret = new \DateTime($date, new \DateTimeZone('UTC'));
+
+                // Convert to zone.
+                if ($zone !== null) {
+                    $ret->setTimezone(new \DateTimeZone($zone));
+                }
+
+                return $ret;
             } catch (\Throwable $e) {
                 throw new UuidError($e->getMessage(), $e->getCode(), $e);
             }
