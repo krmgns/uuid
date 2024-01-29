@@ -200,8 +200,10 @@ class DateTimeUuid extends Uuid
 
     /**
      * Get current UTC date/time.
+     *
+     * @return string
      */
-    private static function datetime(): string
+    public static function datetime(): string
     {
         return gmdate('YmdHis');
     }

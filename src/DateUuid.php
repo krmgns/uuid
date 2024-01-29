@@ -174,8 +174,10 @@ class DateUuid extends Uuid
 
     /**
      * Get current UTC date.
+     *
+     * @return string
      */
-    private static function date(): string
+    public static function date(): string
     {
         return gmdate('Ymd');
     }
