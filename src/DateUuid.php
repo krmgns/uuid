@@ -38,7 +38,7 @@ class DateUuid extends Uuid
         // Create if none given.
         $value ??= self::generate();
 
-        parent::__construct($value, $strict);
+        parent::__construct($value, false);
     }
 
     /**
