@@ -163,15 +163,22 @@ class DateUuid extends Uuid
 
         // Extract usable part from value.
         if (ctype_xdigit($sub = substr($uuid, 0, 8))) {
-            $ret = '' . hexdec($sub);
+            $dec = hexdec($sub);
+            $tmp = array_pad(str_split((string) $dec, 2), 4, null);
+            [$y, $m, $d] = [join(array_slice($tmp, 0, 2)), ...array_slice($tmp, 2)];
+
+            // Validate
+            if (UuidHelper::isValidDate($y, $m, $d)) {
+                $ret = strval($dec);
+            }
         }
 
         // Validate.
         if ($ret !== null) {
-            if ($threshold && $ret < $threshold) {
+            if ($threshold && $dec < $threshold) {
                 return null;
             }
-            if ($ret > self::date()) {
+            if ($dec > self::date()) {
                 return null;
             }
         }

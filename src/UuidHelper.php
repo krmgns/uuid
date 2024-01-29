@@ -38,4 +38,38 @@ class UuidHelper
 
         return $hex;
     }
+
+    /**
+     * Check if given date is valid.
+     *
+     * @param  int|string|null ...$args
+     * @return bool
+     */
+    public static function isValidDate(int|string|null ...$args): bool
+    {
+        [$y, $m, $d] = array_map('intval', $args);
+
+        return (
+               $y >= 0
+            && $m >= 1 && $m <= 12
+            && $d >= 1 && $d <= 31
+        );
+    }
+
+    /**
+     * Check if given time is valid.
+     *
+     * @param  int|string|null ...$args
+     * @return bool
+     */
+    public static function isValidTime(int|string|null ...$args): bool
+    {
+        [$h, $i, $s] = array_map('intval', $args);
+
+        return (
+               $h >= 0 && $h <= 23
+            && $i >= 0 && $i <= 59
+            && $s >= 0 && $s <= 59
+        );
+    }
 }

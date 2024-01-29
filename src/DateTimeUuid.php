@@ -187,9 +187,14 @@ class DateTimeUuid extends Uuid
 
         // Extract usable part from value.
         if (ctype_xdigit($sub = substr(strtr($uuid, ['-' => '']), 0, 12))) {
-            $dec = '' . hexdec($sub);
-            $tmp = str_split($dec, 2);
-            $ret = [join(array_slice($tmp, 0, 4)), join(array_slice($tmp, 4))];
+            $dec = hexdec($sub);
+            $tmp = array_pad(str_split((string) $dec, 2), 7, null);
+            [$y, $m, $d, $h, $i, $s] = [join(array_slice($tmp, 0, 2)), ...array_slice($tmp, 2)];
+
+            // Validate.
+            if (UuidHelper::isValidDate($y, $m, $d) && UuidHelper::isValidTime($h, $i, $s)){
+                $ret = [$y . $m . $d, $h . $i . $s];
+            }
         }
 
         // Validate.
