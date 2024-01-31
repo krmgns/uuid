@@ -50,7 +50,8 @@ class DateTimeUuidTest extends PHPUnit\Framework\TestCase
 
     function testGetDateTime() {
         $uuid = new DateTimeUuid();
-        [$dates, $times] = [[gmdate('Ymd'), gmdate('Y-m-d')], [gmdate('His'), gmdate('H-i-s')]];
+        $dates = [gmdate('Ymd'), gmdate('Y-m-d')];
+        $times = [gmdate('His'), gmdate('H-i-s')];
 
         self::assertSame($dates[0], $uuid->getDateTime()->format('Ymd'));
         self::assertSame($dates[1], $uuid->getDateTime()->format('Y-m-d'));
