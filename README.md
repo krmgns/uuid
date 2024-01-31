@@ -160,13 +160,14 @@ This class uses 12-length random bytes and 4-length bytes of UTC date as prefix.
 ```php
 use Uuid\DateUuid;
 
-$dates = [gmdate('Ymd'), gmdate('Y-m-d')];
+$date = explode('.', gmdate('Y.m.d'));
+$time = explode('.', gmdate('00:00:00'));
 
 // Getting date.
 $uuid = new DateUuid();
 
-assert($dates[0] === $uuid->getDate());
-assert($dates[1] === $uuid->getDate(separator: '-'));
+assert($date === $uuid->getDate());
+assert(implode('/', $date), === $uuid->getDate(separator: '/'));
 
 $uuid = new DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
@@ -175,8 +176,8 @@ assert(null === $uuid->getDate());
 // Getting date/time.
 $uuid = new DateUuid();
 
-assert($dates[0] === $uuid->getDateTime()->format('Ymd'));
-assert($dates[1] === $uuid->getDateTime()->format('Y-m-d'));
+assert(implode('-', $date) === $uuid->getDateTime()->format('Y-m-d'));
+assert(implode(':', $time) === $uuid->getDateTime()->format('H:i:s'));
 
 $uuid = new DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
@@ -211,14 +212,14 @@ This class uses 10-length random bytes and 6-length bytes of UTC date/time as pr
 ```php
 use Uuid\DateTimeUuid;
 
-$dates = [gmdate('Ymd'), gmdate('Y-m-d')];
-$times = [gmdate('His'), gmdate('H-i-s')];
+$date = explode('.', gmdate('Y.m.d'));
+$time = explode('.', gmdate('H.i.s'));
 
 // Getting date.
 $uuid = new DateTimeUuid();
 
-assert($dates[0] === $uuid->getDate());
-assert($dates[1] === $uuid->getDate(separator: '-'));
+assert($date === $uuid->getDate());
+assert(implode('/', $date) === $uuid->getDate(separator: '/'));
 
 $uuid = new DateTimeUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
@@ -227,8 +228,8 @@ assert(null === $uuid->getDate());
 // Getting time.
 $uuid = new DateTimeUuid();
 
-assert($times[0] === $uuid->getTime());
-assert($times[1] === $uuid->getTime(separator: '-'));
+assert($time === $uuid->getTime());
+assert(implode(':', $time) === $uuid->getTime(separator: ':'));
 
 $uuid = new DateTimeUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
@@ -237,10 +238,8 @@ assert(null === $uuid->getTime());
 // Getting date/time.
 $uuid = new DateTimeUuid();
 
-assert($dates[0] === $uuid->getDateTime()->format('Ymd'));
-assert($dates[1] === $uuid->getDateTime()->format('Y-m-d'));
-assert($times[0] === $uuid->getDateTime()->format('His'));
-assert($times[1] === $uuid->getDateTime()->format('H-i-s'));
+assert(implode('-', $date) === $uuid->getDateTime()->format('Y-m-d'));
+assert(implode(':', $time) === $uuid->getDateTime()->format('H:i:s'));
 
 $uuid = new DateTimeUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
