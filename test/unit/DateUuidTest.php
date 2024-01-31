@@ -29,7 +29,7 @@ class DateUuidTest extends PHPUnit\Framework\TestCase
         $date = explode('.', gmdate('Y.m.d'));
 
         self::assertSame($date, $uuid->getDate());
-        self::assertSame(implode('/', $date), $uuid->getDate(separator: '/'));
+        self::assertSame(implode('-', $date), $uuid->getDate(separator: '-'));
 
         $uuid = new DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
@@ -39,7 +39,7 @@ class DateUuidTest extends PHPUnit\Framework\TestCase
     function testGetDateTime() {
         $uuid = new DateUuid();
         $date = explode('.', gmdate('Y.m.d'));
-        $time = explode('.', gmdate('00:00:00'));
+        $time = explode('.', gmdate('00.00.00'));
 
         self::assertSame(implode('-', $date), $uuid->getDateTime()->format('Y-m-d'));
         self::assertSame(implode(':', $time), $uuid->getDateTime()->format('H:i:s'));
