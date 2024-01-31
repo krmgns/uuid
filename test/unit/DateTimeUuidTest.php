@@ -78,8 +78,7 @@ class DateTimeUuidTest extends PHPUnit\Framework\TestCase
         self::assertSame(32, strlen($hash));
         self::assertTrue(ctype_xdigit($hash));
 
-        $version = substr($hash, 12, 1);
-        $variant = substr($hash, 16, 1);
+        [$version, $variant] = [$hash[12], $hash[16]];
 
         self::assertSame($version, '4');
         self::assertContains($variant, ['8','9','a','b']);
