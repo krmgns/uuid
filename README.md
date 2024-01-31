@@ -168,7 +168,7 @@ $uuid = new DateUuid();
 assert($dates[0] === $uuid->getDate());
 assert($dates[1] === $uuid->getDate(separator: '-'));
 
-$uuid = new DateUuid(md5(''), strict: false);
+$uuid = new DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
 assert(null === $uuid->getDate());
 
@@ -178,7 +178,7 @@ $uuid = new DateUuid();
 assert($dates[0] === $uuid->getDateTime()->format('Ymd'));
 assert($dates[1] === $uuid->getDateTime()->format('Y-m-d'));
 
-$uuid = new DateUuid(md5(''), strict: false);
+$uuid = new DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
 assert(null === $uuid->getDateTime());
 ```
@@ -191,15 +191,15 @@ $uuid = DateUuid::generate(); // Eg: 0134b3ce-25fc-49f8-b9f9-61ed2784c7d1
 
 // Parsing.
 $uuid1 = new DateUuid();
-$uuid2 = new DateUuid(md5(''), strict: false);
+$uuid2 = new DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
-assert(null !== DateUuid::parseDate($uuid1->value));
-assert(null === DateUuid::parseDate($uuid2->value));
+assert(null !== DateUuid::parse($uuid1->value));
+assert(null === DateUuid::parse($uuid2->value));
 
 // Next year for falsity (eg: 20241212).
 $threshold = (gmdate('Y') + 1) . '1212';
 
-assert(null === DateUuid::parseDate($uuid1->value, $threshold));
+assert(null === DateUuid::parse($uuid1->value, $threshold));
 ```
 
 See [test/unit/DateUuidTest.php](test/unit/DateUuidTest.php) for more examples. <br><br>
@@ -220,7 +220,7 @@ $uuid = new DateTimeUuid();
 assert($dates[0] === $uuid->getDate());
 assert($dates[1] === $uuid->getDate(separator: '-'));
 
-$uuid = new DateTimeUuid(md5(''), strict: false);
+$uuid = new DateTimeUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
 assert(null === $uuid->getDate());
 
@@ -230,7 +230,7 @@ $uuid = new DateTimeUuid();
 assert($times[0] === $uuid->getTime());
 assert($times[1] === $uuid->getTime(separator: '-'));
 
-$uuid = new DateTimeUuid(md5(''), strict: false);
+$uuid = new DateTimeUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
 assert(null === $uuid->getTime());
 
@@ -242,7 +242,7 @@ assert($dates[1] === $uuid->getDateTime()->format('Y-m-d'));
 assert($times[0] === $uuid->getDateTime()->format('His'));
 assert($times[1] === $uuid->getDateTime()->format('H-i-s'));
 
-$uuid = new DateTimeUuid(md5(''), strict: false);
+$uuid = new DateTimeUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
 assert(null === $uuid->getDateTime());
 ```
@@ -255,15 +255,15 @@ $uuid = DateTimeUuid::generate(); // Eg: 12666c9c-b0c6-4532-b8da-dbc660ff4170
 
 // Parsing.
 $uuid1 = new DateTimeUuid();
-$uuid2 = new DateTimeUuid(md5(''), strict: false);
+$uuid2 = new DateTimeUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
-assert(null !== DateTimeUuid::parseDateTime($uuid1->value));
-assert(null === DateTimeUuid::parseDateTime($uuid2->value));
+assert(null !== DateTimeUuid::parse($uuid1->value));
+assert(null === DateTimeUuid::parse($uuid2->value));
 
 // Next year for falsity (eg: 20241212191919).
 $threshold = (gmdate('Y') + 1) . '1212191919';
 
-assert(null === DateTimeUuid::parseDateTime($uuid1->value, $threshold));
+assert(null === DateTimeUuid::parse($uuid1->value, $threshold));
 ```
 
 See [test/unit/DateTimeUuidTest.php](test/unit/DateTimeUuidTest.php) for more examples. <br><br>
