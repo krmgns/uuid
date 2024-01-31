@@ -119,7 +119,7 @@ class UuidTest extends PHPUnit\Framework\TestCase
         self::assertSame(36, strlen($hash));
 
         self::expectError(UuidError::class);
-        self::expectErrorMessage('Format for only 32-length UUIDs');
+        self::expectErrorMessage('Format for only 32-length hashes');
 
         Uuid::format('invalid');
     }

@@ -40,6 +40,6 @@ class UuidError extends \Error
 
     public static function forInvalidHash(): static
     {
-        return new static('Format for only 32-length UUIDs');
+        return new static('Format for only 32-length hashes');
     }
 }
