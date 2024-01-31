@@ -26,24 +26,25 @@ class DateUuidTest extends PHPUnit\Framework\TestCase
 
     function testGetDate() {
         $uuid = new DateUuid();
-        $dates = [gmdate('Ymd'), gmdate('Y-m-d')];
+        $date = explode('.', gmdate('Y.m.d'));
 
-        self::assertSame($dates[0], $uuid->getDate());
-        self::assertSame($dates[1], $uuid->getDate(separator: '-'));
+        self::assertSame($date, $uuid->getDate());
+        self::assertSame(implode('/', $date), $uuid->getDate(separator: '/'));
 
-        $uuid = new DateUuid(md5(''), strict: false);
+        $uuid = new DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
         self::assertNull($uuid->getDate());
     }
 
     function testGetDateTime() {
         $uuid = new DateUuid();
-        $dates = [gmdate('Ymd'), gmdate('Y-m-d')];
+        $date = explode('.', gmdate('Y.m.d'));
+        $time = explode('.', gmdate('00:00:00'));
 
-        self::assertSame($dates[0], $uuid->getDateTime()->format('Ymd'));
-        self::assertSame($dates[1], $uuid->getDateTime()->format('Y-m-d'));
+        self::assertSame(implode('-', $date), $uuid->getDateTime()->format('Y-m-d'));
+        self::assertSame(implode(':', $time), $uuid->getDateTime()->format('H:i:s'));
 
-        $uuid = new DateUuid(md5(''), strict: false);
+        $uuid = new DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
         self::assertNull($uuid->getDateTime());
     }
@@ -72,7 +73,7 @@ class DateUuidTest extends PHPUnit\Framework\TestCase
 
     function testValidate() {
         $uuid1 = new DateUuid();
-        $uuid2 = new DateUuid(md5(''), strict: false);
+        $uuid2 = new DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
         self::assertTrue(DateUuid::validate($uuid1->value));
         self::assertFalse(DateUuid::validate($uuid2->value, strict: false));
@@ -85,16 +86,16 @@ class DateUuidTest extends PHPUnit\Framework\TestCase
         self::assertFalse(DateUuid::validate($uuid2->value, threshold: $threshold, strict: false));
     }
 
-    function testParseDate() {
+    function testParse() {
         $uuid1 = new DateUuid();
-        $uuid2 = new DateUuid(md5(''), strict: false);
+        $uuid2 = new DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
-        self::assertNotNull(DateUuid::parseDate($uuid1->value));
-        self::assertNull(DateUuid::parseDate($uuid2->value));
+        self::assertNotNull(DateUuid::parse($uuid1->value));
+        self::assertNull(DateUuid::parse($uuid2->value));
 
         $threshold = $this->threshold();
 
-        self::assertNull(DateUuid::parseDate($uuid1->value, threshold: $threshold));
+        self::assertNull(DateUuid::parse($uuid1->value, threshold: $threshold));
     }
 
     private function threshold($diff = 1) {

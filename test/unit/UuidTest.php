@@ -84,7 +84,7 @@ class UuidTest extends PHPUnit\Framework\TestCase
 
     function testValidate() {
         $uuid1 = new Uuid();
-        $uuid2 = new Uuid(md5(''), strict: false);
+        $uuid2 = new Uuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
         self::assertTrue(Uuid::validate($uuid1->value));
         self::assertTrue(Uuid::validate($uuid2->value, strict: false));
