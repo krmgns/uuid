@@ -72,4 +72,31 @@ class UuidHelper
             && $s >= 0 && $s <= 59
         );
     }
+
+    /**
+     * Create a Traversable object with some utilities.
+     *
+     * @param  string $str
+     * @param  int    $len
+     * @param  int    $pad
+     * @return Traversable
+     */
+    public static function slit(string $str, int $len, int $pad = null): \Traversable
+    {
+        return new class(str_split($str, $len), $pad) implements \IteratorAggregate {
+            public function __construct(public array $data, int $pad = null) {
+                $pad && $this->data = array_pad($this->data, $pad, null);
+            }
+
+            public function slice(int $start, int $len = null): self {
+                return new self(array_slice($this->data, $start, $len));
+            }
+
+            public function getIterator(): \Traversable {
+                foreach ($this->data as $i => $item) {
+                    yield $i => $item;
+                }
+            }
+        };
+    }
 }

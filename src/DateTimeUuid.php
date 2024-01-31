@@ -45,18 +45,14 @@ class DateTimeUuid extends Uuid
      * Get date.
      *
      * @param  string|null $separator
-     * @return string|null
+     * @return array<string>|string|null
      */
-    public function getDate(string $separator = null): string|null
+    public function getDate(string $separator = null): array|string|null
     {
-        [$date, ] = self::parseDateTime($this->value, $this->threshold) ?: [null, null];
+        [$date] = self::parse($this->value, $this->threshold) ?: [null];
 
-        // Period separator.
-        if ($date !== null && $separator) {
-            $date = vsprintf(
-                "%s%s{$separator}%s{$separator}%s",
-                str_split($date, 2)
-            );
+        if ($date && $separator) {
+            $date = vsprintf("%s{$separator}%s{$separator}%s", $date);
         }
 
         return $date;
@@ -66,18 +62,14 @@ class DateTimeUuid extends Uuid
      * Get time.
      *
      * @param  string|null $separator
-     * @return string|null
+     * @return array<string>|string|null
      */
-    public function getTime(string $separator = null): string|null
+    public function getTime(string $separator = null): array|string|null
     {
-        [, $time] = self::parseDateTime($this->value, $this->threshold) ?: [null, null];
+        [, $time] = self::parse($this->value, $this->threshold) ?: [null, null];
 
-        // Period separator.
-        if ($time !== null && $separator) {
-            $time = vsprintf(
-                "%s{$separator}%s{$separator}%s",
-                str_split($time, 2)
-            );
+        if ($time && $separator) {
+            $time = vsprintf("%s{$separator}%s{$separator}%s", $time);
         }
 
         return $time;
@@ -92,11 +84,11 @@ class DateTimeUuid extends Uuid
      */
     public function getDateTime(string $zone = null): \DateTime|null
     {
-        [$date, $time] = self::parseDateTime($this->value, $this->threshold) ?: [null, null];
+        [$date, $time] = self::parse($this->value, $this->threshold) ?: [null, null];
 
         if ($date !== null && $time !== null) {
             try {
-                $ret = new \DateTime($date . $time, new \DateTimeZone('UTC'));
+                $ret = new \DateTime(join($date) . join($time), new \DateTimeZone('UTC'));
 
                 // Convert to zone.
                 if ($zone !== null) {
@@ -167,7 +159,7 @@ class DateTimeUuid extends Uuid
         if (!parent::validate($uuid, $strict)) {
             return false;
         }
-        if (!self::parseDateTime($uuid, $threshold)) {
+        if (!self::parse($uuid, $threshold)) {
             return false;
         }
 
@@ -179,21 +171,21 @@ class DateTimeUuid extends Uuid
      *
      * @param  string          $uuid
      * @param  string|int|null $threshold
-     * @return array|null
+     * @return array<array<string>>|null
      */
-    public static function parseDateTime(string $uuid, string|int $threshold = null): array|null
+    public static function parse(string $uuid, string|int $threshold = null): array|null
     {
         $ret = null;
 
         // Extract usable part from value.
         if (ctype_xdigit($sub = substr(strtr($uuid, ['-' => '']), 0, 12))) {
             $dec = hexdec($sub);
-            $tmp = array_pad(str_split((string) $dec, 2), 7, null);
-            [$y, $m, $d, $h, $i, $s] = [join(array_slice($tmp, 0, 2)), ...array_slice($tmp, 2)];
+            $tmp = UuidHelper::slit((string) $dec, 2, pad: 7);
+            [$y, $m, $d, $h, $i, $s] = [join([...$tmp->slice(0, 2)]), ...$tmp->slice(2)];
 
             // Validate.
             if (UuidHelper::isValidDate($y, $m, $d) && UuidHelper::isValidTime($h, $i, $s)){
-                $ret = [$y . $m . $d, $h . $i . $s];
+                $ret = [[$y, $m, $d], [$h, $i, $s]];
             }
         }
 

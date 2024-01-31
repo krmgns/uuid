@@ -45,18 +45,14 @@ class DateUuid extends Uuid
      * Get date.
      *
      * @param  string|null $separator
-     * @return string|null
+     * @return array<string>|string|null
      */
-    public function getDate(string $separator = null): string|null
+    public function getDate(string $separator = null): array|string|null
     {
-        $date = self::parseDate($this->value, $this->threshold);
+        $date = self::parse($this->value, $this->threshold);
 
-        // Period separator.
-        if ($date !== null && $separator) {
-            $date = vsprintf(
-                "%s%s{$separator}%s{$separator}%s",
-                str_split($date, 2)
-            );
+        if ($date && $separator) {
+            $date = vsprintf("%s{$separator}%s{$separator}%s", $date);
         }
 
         return $date;
@@ -71,11 +67,11 @@ class DateUuid extends Uuid
      */
     public function getDateTime(string $zone = null): \DateTime|null
     {
-        $date = self::parseDate($this->value, $this->threshold);
+        $date = self::parse($this->value, $this->threshold);
 
         if ($date !== null) {
             try {
-                $ret = new \DateTime($date, new \DateTimeZone('UTC'));
+                $ret = new \DateTime(join($date), new \DateTimeZone('UTC'));
 
                 // Convert to zone.
                 if ($zone !== null) {
@@ -143,7 +139,7 @@ class DateUuid extends Uuid
         if (!parent::validate($uuid, $strict)) {
             return false;
         }
-        if (!self::parseDate($uuid, $threshold)) {
+        if (!self::parse($uuid, $threshold)) {
             return false;
         }
 
@@ -155,21 +151,21 @@ class DateUuid extends Uuid
      *
      * @param  string          $uuid
      * @param  string|int|null $threshold
-     * @return string|null
+     * @return array<string>|null
      */
-    public static function parseDate(string $uuid, string|int $threshold = null): string|null
+    public static function parse(string $uuid, string|int $threshold = null): array|null
     {
         $ret = null;
 
         // Extract usable part from value.
         if (ctype_xdigit($sub = substr($uuid, 0, 8))) {
             $dec = hexdec($sub);
-            $tmp = array_pad(str_split((string) $dec, 2), 4, null);
-            [$y, $m, $d] = [join(array_slice($tmp, 0, 2)), ...array_slice($tmp, 2)];
+            $tmp = UuidHelper::slit((string) $dec, 2, pad: 4);
+            [$y, $m, $d] = [join([...$tmp->slice(0, 2)]), ...$tmp->slice(2)];
 
-            // Validate
+            // Validate.
             if (UuidHelper::isValidDate($y, $m, $d)) {
-                $ret = strval($dec);
+                $ret = [$y, $m, $d];
             }
         }
 
