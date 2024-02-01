@@ -125,7 +125,7 @@ assert(Uuid::NULL_HASH === $uuid2->value);
 $uuid = Uuid::generate(); // Eg: fec3cfe2-d378-4181-8ba1-99c54bcfa63e
 
 // Validating.
-$valid = Uuid::validate($uuid->value);
+$valid = Uuid::validate($uuid);
 assert(true === $valid);
 
 assert(false === Uuid::validate('invalid'));
@@ -138,8 +138,8 @@ assert(true === Uuid::validate(Uuid::NULL, strict: false));
 assert(true === Uuid::validate(Uuid::NULL_HASH, strict: false));
 
 // Equal checking.
-assert(true === Uuid::equals($uuid->value, 'fec3cfe2-d378-4181-8ba1-99c54bcfa63e'));
-assert(false === Uuid::equals($uuid->value, 'invalid-uuid-input-value'));
+assert(true === Uuid::equals($uuid, 'fec3cfe2-d378-4181-8ba1-99c54bcfa63e'));
+assert(false === Uuid::equals($uuid, 'invalid-uuid-input-value'));
 
 // DIY tools.
 $bins = random_bytes(16);
@@ -167,7 +167,7 @@ $time = explode('.', gmdate('00:00:00'));
 $uuid = new DateUuid();
 
 assert($date === $uuid->getDate());
-assert(implode('/', $date), === $uuid->getDate(separator: '/'));
+assert(implode('/', $date) === $uuid->getDate(separator: '/'));
 
 $uuid = new DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict: false);
 
