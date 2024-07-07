@@ -10,10 +10,15 @@ jobs:
 
     strategy:
       matrix:
-        php-version: ['8.2']
+        php-version: ['8.2', '8.3']
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
