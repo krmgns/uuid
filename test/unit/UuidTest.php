@@ -106,8 +106,8 @@ class UuidTest extends PHPUnit\Framework\TestCase
         self::assertIsString($bins);
         self::assertSame(16, strlen($bins));
 
-        self::expectError(UuidError::class);
-        self::expectErrorMessage('Modify for only 16-length bins');
+        self::expectException(UuidError::class);
+        self::expectExceptionMessage('Modify for only 16-length bins');
 
         Uuid::modify('invalid');
     }
@@ -118,8 +118,8 @@ class UuidTest extends PHPUnit\Framework\TestCase
         self::assertIsString($hash);
         self::assertSame(36, strlen($hash));
 
-        self::expectError(UuidError::class);
-        self::expectErrorMessage('Format for only 32-length hashes');
+        self::expectException(UuidError::class);
+        self::expectExceptionMessage('Format for only 32-length hashes');
 
         Uuid::format('invalid');
     }
